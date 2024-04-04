@@ -135,7 +135,6 @@ Partial Class Form1
         ComboBox1.Name = "ComboBox1"
         ComboBox1.Size = New Size(103, 28)
         ComboBox1.TabIndex = 19
-        ComboBox1.SelectedIndex = 1
         ' 
         ' Form1
         ' 

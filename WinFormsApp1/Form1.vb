@@ -11,15 +11,6 @@ Public Class Form1
     Private Sub Form_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         CargarDatosDataGridView()
     End Sub
-    Private Sub AltaClientes()
-
-    End Sub
-    Private Sub BajaClientes()
-
-    End Sub
-    Private Sub ModiClientes()
-
-    End Sub
     'Manejo del tree-------------------------------------------->
     Private Sub TreeView1_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreeView1.AfterSelect
         If TreeView1.SelectedNode IsNot Nothing Then
@@ -44,7 +35,30 @@ Public Class Form1
     End Sub
     'Boton para eliminar un cliente seleccionado----------------------------------------->
     Private Sub Eliminar_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
+        If DataGridView1.SelectedCells.Count > 0 Then
+            Dim id As Object = DataGridView1.Rows(DataGridView1.SelectedCells(0).RowIndex).Cells("ID").Value
+            EliminarCliente(id.ToString())
+            CargarDatosDataGridView()
+        End If
+    End Sub
+    Private Sub EliminarCliente(idCliente As String)
+        Dim query As String = ""
+        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
+        Using connection As New SqlConnection(connectionString)
+            connection.Open()
+
+            query = "DELETE FROM clientes WHERE ID = @valor"
+
+            Dim command As New SqlCommand(query, connection)
+
+            command.Parameters.AddWithValue("@valor", idCliente)
+
+            Dim reader As SqlDataReader = command.ExecuteReader
+
+            reader.Close()
+            connection.Close()
+        End Using
     End Sub
     'Muestra la lista de clientes ----------------------------------------------------------->
     Private Sub CargarDatosDataGridView()
@@ -55,21 +69,27 @@ Public Class Form1
             connection.Open()
 
             If treeIndex = 0 Then
-                query = "SELECT * FROM clientes WHERE (@valor = '' OR @elemento = @valor)"
-            ElseIf treeIndex = 1 Then
-                query = "SELECT * FROM Productos"
-            End If
-            MessageBox.Show(ComboBox1.Text)
-            Dim command As New SqlCommand(query, connection)
+                ' Construir la consulta SQL según la opción seleccionada en el ComboBox
+                Dim elemento As String = ""
+                Select Case ComboBox1.SelectedIndex
+                    Case 0
+                        elemento = "ID"
+                    Case 1
+                        elemento = "cliente"
+                    Case 2
+                        elemento = "telefono"
+                    Case 3
+                        elemento = "correo"
+                    Case Else
+                        elemento = "cliente" ' Valor predeterminado si no se selecciona ninguna opción válida
+                End Select
 
-            If treeIndex = 0 Then
-                command.Parameters.AddWithValue("@elemento", ComboBox1.Text) ' Cambia "cliente" por el campo real que deseas filtrar
-                command.Parameters.AddWithValue("@valor", TextBox1.Text) ' Suponiendo que el valor viene de un TextBox
-            End If
+                query = "SELECT * FROM clientes WHERE (@valor = '' OR " & elemento & " LIKE @valor)"
+                Dim command As New SqlCommand(query, connection)
+                command.Parameters.AddWithValue("@valor", "%" & TextBox1.Text & "%") ' Filtrar por el valor ingresado en TextBox1
 
-            Dim reader As SqlDataReader = command.ExecuteReader
+                Dim reader As SqlDataReader = command.ExecuteReader
 
-            If treeIndex = 0 Then
                 Dim listaDatos As New List(Of Cliente)
 
                 While reader.Read
@@ -83,11 +103,13 @@ Public Class Form1
 
                 DataGridView1.DataSource = listaDatos
                 DataGridView1.Columns(0).Width = 40
+
+                reader.Close()
             ElseIf treeIndex = 1 Then
+                query = "SELECT * FROM Productos"
                 ' Código para cargar datos de productos en el DataGridView
             End If
 
-            reader.Close()
             connection.Close()
         End Using
 
@@ -111,21 +133,13 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub TextBox1_TextChanged(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown
+    Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown
         If e.KeyCode = Keys.Enter Then
             CargarDatosDataGridView()
         End If
     End Sub
 
-    Private Sub BuscarProducto()
-
-    End Sub
-
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-
-    End Sub
-
-    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-
+        CargarDatosDataGridView()
     End Sub
 End Class
