@@ -1,9 +1,7 @@
-﻿Imports System.ComponentModel.Design.ObjectSelectorEditor
+﻿
 Imports System.Configuration
 Imports System.Data.SqlClient
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Imports WinFormsApp1.Cliente
-Imports WinFormsApp1.Producto
+
 
 Public Class Form1
     Dim treeIndex As Integer
@@ -16,6 +14,8 @@ Public Class Form1
         If TreeView1.SelectedNode IsNot Nothing Then
             treeIndex = TreeView1.Nodes.IndexOf(TreeView1.SelectedNode)
         End If
+        ComboBox1.SelectedIndex = 1
+        ComboBox2.SelectedIndex = 1
         CargarDatosDataGridView()
     End Sub
     'Boton para agregar un nuevo cliente----------------------------------->
@@ -26,39 +26,66 @@ Public Class Form1
             alta.ShowDialog()
             CargarDatosDataGridView()
         ElseIf treeIndex = 1 Then
-            MessageBox.Show("Alta a productos.")
-            '  Dim alta As New AltaProductos()
-            'alta.StartPosition = FormStartPosition.CenterScreen
-            ' Mostrar el formulario
-            ' alta.Show()
+            Dim alta As New AltaProductos()
+            alta.StartPosition = FormStartPosition.CenterScreen
+            alta.ShowDialog()
+            CargarDatosDataGridView()
         End If
     End Sub
     'Boton para eliminar un cliente seleccionado----------------------------------------->
     Private Sub Eliminar_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
         If DataGridView1.SelectedCells.Count > 0 Then
             Dim id As Object = DataGridView1.Rows(DataGridView1.SelectedCells(0).RowIndex).Cells("ID").Value
-            EliminarCliente(id.ToString())
+            Eliminar(id.ToString())
             CargarDatosDataGridView()
         End If
     End Sub
-    Private Sub EliminarCliente(idCliente As String)
-        Dim query As String = ""
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+    Private Sub Eliminar(ID As String)
+        If treeIndex = 0 Then
+            Dim result As DialogResult = MessageBox.Show("¿Está seguro de que desea borrar al cliente?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If result = DialogResult.No Then
+                Return
+            End If
+            Dim query As String = ""
+            Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
 
-        Using connection As New SqlConnection(connectionString)
-            connection.Open()
+            Using connection As New SqlConnection(connectionString)
+                connection.Open()
 
-            query = "DELETE FROM clientes WHERE ID = @valor"
+                query = "DELETE FROM clientes WHERE ID = @valor"
 
-            Dim command As New SqlCommand(query, connection)
+                Dim command As New SqlCommand(query, connection)
 
-            command.Parameters.AddWithValue("@valor", idCliente)
+                command.Parameters.AddWithValue("@valor", ID)
 
-            Dim reader As SqlDataReader = command.ExecuteReader
+                Dim reader As SqlDataReader = command.ExecuteReader
 
-            reader.Close()
-            connection.Close()
-        End Using
+                reader.Close()
+                connection.Close()
+            End Using
+        ElseIf treeIndex = 1 Then
+            Dim result As DialogResult = MessageBox.Show("¿Está seguro de que desea borrar el producto?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If result = DialogResult.No Then
+                Return
+            End If
+            Dim query As String = ""
+            Dim connectionString As String = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
+
+            Using connection As New SqlConnection(connectionString)
+                connection.Open()
+
+                query = "DELETE FROM productos WHERE ID = @valor"
+
+                Dim command As New SqlCommand(query, connection)
+
+                command.Parameters.AddWithValue("@valor", ID)
+
+                Dim reader As SqlDataReader = command.ExecuteReader
+
+                reader.Close()
+                connection.Close()
+            End Using
+        End If
     End Sub
     'Muestra la lista de clientes ----------------------------------------------------------->
     Private Sub CargarDatosDataGridView()
@@ -69,7 +96,8 @@ Public Class Form1
             connection.Open()
 
             If treeIndex = 0 Then
-                ' Construir la consulta SQL según la opción seleccionada en el ComboBox
+                ComboBox1.Visible = True
+                ComboBox2.Visible = False
                 Dim elemento As String = ""
                 Select Case ComboBox1.SelectedIndex
                     Case 0
@@ -81,12 +109,12 @@ Public Class Form1
                     Case 3
                         elemento = "correo"
                     Case Else
-                        elemento = "cliente" ' Valor predeterminado si no se selecciona ninguna opción válida
+                        elemento = "cliente"
                 End Select
 
                 query = "SELECT * FROM clientes WHERE (@valor = '' OR " & elemento & " LIKE @valor)"
                 Dim command As New SqlCommand(query, connection)
-                command.Parameters.AddWithValue("@valor", "%" & TextBox1.Text & "%") ' Filtrar por el valor ingresado en TextBox1
+                command.Parameters.AddWithValue("@valor", "%" & TextBox1.Text & "%")
 
                 Dim reader As SqlDataReader = command.ExecuteReader
 
@@ -106,8 +134,43 @@ Public Class Form1
 
                 reader.Close()
             ElseIf treeIndex = 1 Then
-                query = "SELECT * FROM Productos"
-                ' Código para cargar datos de productos en el DataGridView
+                ComboBox1.Visible = False
+                ComboBox2.Visible = True
+                Dim elemento As String = ""
+                Select Case ComboBox2.SelectedIndex
+                    Case 0
+                        elemento = "ID"
+                    Case 1
+                        elemento = "Nombre"
+                    Case 2
+                        elemento = "Precio"
+                    Case 3
+                        elemento = "Categoria"
+                    Case Else
+                        elemento = "Nombre"
+                End Select
+
+                query = "SELECT * FROM productos WHERE (@valor = '' OR " & elemento & " LIKE @valor)"
+                Dim command As New SqlCommand(query, connection)
+                command.Parameters.AddWithValue("@valor", "%" & TextBox1.Text & "%")
+
+                Dim reader As SqlDataReader = command.ExecuteReader
+
+                Dim listaDatos As New List(Of Producto)
+
+                While reader.Read
+                    Dim producto As New Producto
+                    producto.ID = reader("ID")
+                    producto.Producto = reader("nombre").ToString
+                    producto.Precio = reader("precio").ToString
+                    producto.Categoria = reader("categoria").ToString
+                    listaDatos.Add(producto)
+                End While
+
+                DataGridView1.DataSource = listaDatos
+                DataGridView1.Columns(0).Width = 40
+
+                reader.Close()
             End If
 
             connection.Close()
@@ -125,11 +188,19 @@ Public Class Form1
     Private Sub DataGridView1_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellDoubleClick
 
         If e.RowIndex >= 0 Then
-            Dim idCliente As Object = DataGridView1.Rows(e.RowIndex).Cells("ID").Value
-            Dim modi As New ModiClientes(idCliente)
-            modi.StartPosition = FormStartPosition.CenterScreen
-            modi.ShowDialog()
-            CargarDatosDataGridView()
+            If treeIndex = 0 Then
+                Dim clienteID As Object = DataGridView1.Rows(e.RowIndex).Cells("ID").Value
+                Dim modi As New ModiClientes(clienteID)
+                modi.StartPosition = FormStartPosition.CenterScreen
+                modi.ShowDialog()
+                CargarDatosDataGridView()
+            ElseIf treeIndex = 1 Then
+                Dim productoID As Object = DataGridView1.Rows(e.RowIndex).Cells("ID").Value
+                Dim modi As New ModiProductos(productoID)
+                modi.StartPosition = FormStartPosition.CenterScreen
+                modi.ShowDialog()
+                CargarDatosDataGridView()
+            End If
         End If
     End Sub
 

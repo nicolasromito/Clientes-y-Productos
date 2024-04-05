@@ -36,6 +36,7 @@ Partial Class Form1
         TextBox1 = New TextBox()
         DataGridView1 = New DataGridView()
         ComboBox1 = New ComboBox()
+        ComboBox2 = New ComboBox()
         MenuStrip1.SuspendLayout()
         CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -111,7 +112,7 @@ Partial Class Form1
         DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = Color.LightBlue
-        DataGridViewCellStyle1.Font = New Font("Arial", 10F, FontStyle.Bold)
+        DataGridViewCellStyle1.Font = New Font("Arial", 10.0F, FontStyle.Bold)
         DataGridViewCellStyle1.ForeColor = SystemColors.WindowText
         DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
         DataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText
@@ -132,15 +133,27 @@ Partial Class Form1
         ComboBox1.ImeMode = ImeMode.NoControl
         ComboBox1.Items.AddRange(New Object() {"ID", "Cliente", "Telefono", "Correo"})
         ComboBox1.Location = New Point(175, 60)
-        ComboBox1.Name = "ComboBox1"
+        ComboBox1.Name = "ComboBox2"
         ComboBox1.Size = New Size(103, 28)
         ComboBox1.TabIndex = 19
         ' 
+        ' ComboBox2
+        ' 
+        ComboBox2.DropDownStyle = ComboBoxStyle.DropDownList
+        ComboBox2.FormattingEnabled = True
+        ComboBox2.ImeMode = ImeMode.NoControl
+        ComboBox2.Items.AddRange(New Object() {"ID", "Nombre", "Precio", "Categoria"})
+        ComboBox2.Location = New Point(175, 60)
+        ComboBox2.Name = "ComboBox2"
+        ComboBox2.Size = New Size(103, 28)
+        ComboBox2.TabIndex = 19
+        ' 
         ' Form1
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
+        AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(929, 409)
+        Controls.Add(ComboBox2)
         Controls.Add(ComboBox1)
         Controls.Add(DataGridView1)
         Controls.Add(TextBox1)
@@ -177,5 +190,6 @@ Partial Class Form1
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents DataGridView1 As DataGridView
     Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents ComboBox2 As ComboBox
 
 End Class

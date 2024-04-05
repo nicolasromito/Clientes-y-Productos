@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class ModiClientes
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class ModiProductos
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()>
+    <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,14 +20,14 @@ Partial Class ModiClientes
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()>
+    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Label1 = New Label()
         Label2 = New Label()
         Label3 = New Label()
-        TextBoxNombre = New TextBox()
-        TextBoxTelefono = New TextBox()
-        TextBoxCorreo = New TextBox()
+        TextBoxProducto = New TextBox()
+        TextBoxPrecio = New TextBox()
+        TextBoxCategoria = New TextBox()
         MenuStrip1 = New MenuStrip()
         GuardarToolStripMenuItem = New ToolStripMenuItem()
         EliminarToolStripMenuItem = New ToolStripMenuItem()
@@ -39,48 +39,48 @@ Partial Class ModiClientes
         Label1.AutoSize = True
         Label1.Location = New Point(12, 39)
         Label1.Name = "Label1"
-        Label1.Size = New Size(67, 20)
+        Label1.Size = New Size(72, 20)
         Label1.TabIndex = 3
-        Label1.Text = "Nombre:"
+        Label1.Text = "Producto:"
         ' 
         ' Label2
         ' 
         Label2.AutoSize = True
         Label2.Location = New Point(12, 79)
         Label2.Name = "Label2"
-        Label2.Size = New Size(70, 20)
+        Label2.Size = New Size(53, 20)
         Label2.TabIndex = 4
-        Label2.Text = "Telefono:"
+        Label2.Text = "Precio:"
         ' 
         ' Label3
         ' 
         Label3.AutoSize = True
         Label3.Location = New Point(12, 120)
         Label3.Name = "Label3"
-        Label3.Size = New Size(41, 20)
+        Label3.Size = New Size(77, 20)
         Label3.TabIndex = 5
-        Label3.Text = "Mail:"
+        Label3.Text = "Categoria:"
         ' 
-        ' TextBoxNombre
+        ' TextBoxProducto
         ' 
-        TextBoxNombre.Location = New Point(103, 39)
-        TextBoxNombre.Name = "TextBoxNombre"
-        TextBoxNombre.Size = New Size(300, 27)
-        TextBoxNombre.TabIndex = 6
+        TextBoxProducto.Location = New Point(103, 39)
+        TextBoxProducto.Name = "TextBoxProducto"
+        TextBoxProducto.Size = New Size(300, 27)
+        TextBoxProducto.TabIndex = 6
         ' 
-        ' TextBoxTelefono
+        ' TextBoxPrecio
         ' 
-        TextBoxTelefono.Location = New Point(103, 79)
-        TextBoxTelefono.Name = "TextBoxTelefono"
-        TextBoxTelefono.Size = New Size(300, 27)
-        TextBoxTelefono.TabIndex = 7
+        TextBoxPrecio.Location = New Point(103, 79)
+        TextBoxPrecio.Name = "TextBoxPrecio"
+        TextBoxPrecio.Size = New Size(300, 27)
+        TextBoxPrecio.TabIndex = 7
         ' 
-        ' TextBoxCorreo
+        ' TextBoxCategoria
         ' 
-        TextBoxCorreo.Location = New Point(103, 120)
-        TextBoxCorreo.Name = "TextBoxCorreo"
-        TextBoxCorreo.Size = New Size(300, 27)
-        TextBoxCorreo.TabIndex = 8
+        TextBoxCategoria.Location = New Point(103, 120)
+        TextBoxCategoria.Name = "TextBoxCategoria"
+        TextBoxCategoria.Size = New Size(300, 27)
+        TextBoxCategoria.TabIndex = 8
         ' 
         ' MenuStrip1
         ' 
@@ -104,20 +104,20 @@ Partial Class ModiClientes
         EliminarToolStripMenuItem.Size = New Size(77, 24)
         EliminarToolStripMenuItem.Text = "Eliminar"
         ' 
-        ' ModiClientes
+        ' ModiProductos
         ' 
         AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(429, 174)
-        Controls.Add(TextBoxCorreo)
-        Controls.Add(TextBoxTelefono)
-        Controls.Add(TextBoxNombre)
+        Controls.Add(TextBoxCategoria)
+        Controls.Add(TextBoxPrecio)
+        Controls.Add(TextBoxProducto)
         Controls.Add(Label3)
         Controls.Add(Label2)
         Controls.Add(Label1)
         Controls.Add(MenuStrip1)
         MainMenuStrip = MenuStrip1
-        Name = "ModiClientes"
+        Name = "ModiProductos"
         Text = "Modi"
         MenuStrip1.ResumeLayout(False)
         MenuStrip1.PerformLayout()
@@ -128,9 +128,9 @@ Partial Class ModiClientes
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
-    Friend WithEvents TextBoxNombre As TextBox
-    Friend WithEvents TextBoxTelefono As TextBox
-    Friend WithEvents TextBoxCorreo As TextBox
+    Friend WithEvents TextBoxProducto As TextBox
+    Friend WithEvents TextBoxPrecio As TextBox
+    Friend WithEvents TextBoxCategoria As TextBox
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents GuardarToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents EliminarToolStripMenuItem As ToolStripMenuItem

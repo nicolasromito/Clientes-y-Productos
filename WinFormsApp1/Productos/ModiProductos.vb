@@ -1,12 +1,12 @@
 ﻿Imports System.Configuration
 Imports System.Data.SqlClient
 
-Public Class ModiClientes
+Public Class ModiProductos
     Private valorCeldaID As Object = Nothing
     Private vengoDeGuardar As Boolean = 0
-    Public Sub New(clienteID As Object)
+    Public Sub New(ProductoID As Object)
         InitializeComponent()
-        valorCeldaID = clienteID
+        valorCeldaID = ProductoID
     End Sub
 
     Private Sub Alta_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -14,7 +14,7 @@ Public Class ModiClientes
     End Sub
 
     Private Sub CargarDatos()
-        Dim query = "SELECT * FROM clientes WHERE ID=@ID"
+        Dim query = "SELECT * FROM productos WHERE ID=@ID"
 
         Dim connectionString = ConfigurationManager.ConnectionStrings("MyConnectionString").ConnectionString
         Using connection As New SqlConnection(connectionString)
@@ -32,11 +32,11 @@ Public Class ModiClientes
                     If reader.HasRows Then
                         ' Leer los datos y asignarlos a un objeto Cliente
                         While reader.Read()
-                            Dim clientes As New Cliente()
-                            clientes.Nombre = reader("cliente").ToString()
-                            clientes.Telefono = reader("telefono").ToString()
-                            clientes.Mail = reader("correo").ToString()
-                            RellenarCasillas(clientes)
+                            Dim producto As New Producto()
+                            producto.Producto = reader("nombre").ToString()
+                            producto.Precio = reader("precio").ToString()
+                            producto.Categoria = reader("categoria").ToString()
+                            RellenarCasillas(producto)
                         End While
                     Else
                         MessageBox.Show("No se encontraron datos para el ID especificado.")
@@ -51,12 +51,11 @@ Public Class ModiClientes
 
     End Sub
 
-    Private Sub RellenarCasillas(cliente As Cliente)
-        If cliente IsNot Nothing Then
-            TextBoxNombre.Text = cliente.Nombre
-            TextBoxTelefono.Text = cliente.Telefono
-            TextBoxCorreo.Text = cliente.Mail
-            ' Puedes seguir agregando más líneas para llenar otros TextBox con más propiedades del objeto Cliente si es necesario
+    Private Sub RellenarCasillas(producto As Producto)
+        If producto IsNot Nothing Then
+            TextBoxProducto.Text = producto.Producto
+            TextBoxPrecio.Text = producto.Precio
+            TextBoxCategoria.Text = producto.Categoria
         End If
     End Sub
 
@@ -66,13 +65,13 @@ Public Class ModiClientes
             Try
                 ' Abre la conexión
                 connection.Open()
-                Dim sqlQuery = "update clientes set cliente=@cliente, telefono=@telefono, correo=@correo where ID=@ID"
+                Dim sqlQuery = "update productos set nombre=@producto, precio=@precio, categoria=@categoria where ID=@ID"
 
                 ' Crea un comando SQL utilizando la consulta y la conexión
                 Using command As New SqlCommand(sqlQuery, connection)
-                    command.Parameters.AddWithValue("@cliente", TextBoxNombre.Text)
-                    command.Parameters.AddWithValue("@telefono", TextBoxTelefono.Text)
-                    command.Parameters.AddWithValue("@correo", TextBoxCorreo.Text)
+                    command.Parameters.AddWithValue("@producto", TextBoxProducto.Text)
+                    command.Parameters.AddWithValue("@precio", TextBoxPrecio.Text)
+                    command.Parameters.AddWithValue("@categoria", TextBoxCategoria.Text)
                     command.Parameters.AddWithValue("@ID", valorCeldaID)
                     ' Ejecuta el comando
                     Dim rowsAffected = command.ExecuteNonQuery
@@ -99,7 +98,7 @@ Public Class ModiClientes
     End Sub
 
     Private Sub Eliminar_Click(sender As Object, e As EventArgs) Handles EliminarToolStripMenuItem.Click
-        Dim result As DialogResult = MessageBox.Show("¿Está seguro de que desea borrar al cliente?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        Dim result As DialogResult = MessageBox.Show("¿Está seguro de que desea borrar el producto?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.No Then
             Return
         End If
@@ -110,7 +109,7 @@ Public Class ModiClientes
 
                 connection.Open()
 
-                Dim sqlQuery = "DELETE FROM clientes WHERE ID=@ID"
+                Dim sqlQuery = "DELETE FROM productos WHERE ID=@ID"
 
                 Using command As New SqlCommand(sqlQuery, connection)
 

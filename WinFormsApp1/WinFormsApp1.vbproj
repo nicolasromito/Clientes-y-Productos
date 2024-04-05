@@ -25,12 +25,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Update="Productos\Alta.vb" />
-    <Compile Update="Productos\Baja.vb" />
-    <Compile Update="Productos\Modi.vb" />
+    <Compile Update="Productos\AltaProductos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="My Project\Application.Designer.vb">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Update="Productos\ModiProductos.vb">
+      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
 
