@@ -25,6 +25,7 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Dim TreeNode1 As TreeNode = New TreeNode("Clientes")
         Dim TreeNode2 As TreeNode = New TreeNode("Productos")
+        Dim TreeNode3 As TreeNode = New TreeNode("Ventas")
         Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
         TreeView1 = New TreeView()
         MenuStrip1 = New MenuStrip()
@@ -37,6 +38,7 @@ Partial Class Form1
         DataGridView1 = New DataGridView()
         ComboBox1 = New ComboBox()
         ComboBox2 = New ComboBox()
+        ComboBox3 = New ComboBox()
         MenuStrip1.SuspendLayout()
         CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -50,7 +52,9 @@ Partial Class Form1
         TreeNode1.Text = "Clientes"
         TreeNode2.Name = "Productos"
         TreeNode2.Text = "Productos"
-        TreeView1.Nodes.AddRange(New TreeNode() {TreeNode1, TreeNode2})
+        TreeNode3.Name = "Ventas"
+        TreeNode3.Text = "Ventas"
+        TreeView1.Nodes.AddRange(New TreeNode() {TreeNode1, TreeNode2, TreeNode3})
         TreeView1.Size = New Size(151, 378)
         TreeView1.TabIndex = 12
         ' 
@@ -126,18 +130,18 @@ Partial Class Form1
         DataGridView1.Size = New Size(724, 291)
         DataGridView1.TabIndex = 18
         ' 
-        ' ComboBox1
+        ' Clientes
         ' 
         ComboBox1.DropDownStyle = ComboBoxStyle.DropDownList
         ComboBox1.FormattingEnabled = True
         ComboBox1.ImeMode = ImeMode.NoControl
         ComboBox1.Items.AddRange(New Object() {"ID", "Cliente", "Telefono", "Correo"})
         ComboBox1.Location = New Point(175, 60)
-        ComboBox1.Name = "ComboBox2"
+        ComboBox1.Name = "ComboBox1"
         ComboBox1.Size = New Size(103, 28)
         ComboBox1.TabIndex = 19
         ' 
-        ' ComboBox2
+        ' Productos
         ' 
         ComboBox2.DropDownStyle = ComboBoxStyle.DropDownList
         ComboBox2.FormattingEnabled = True
@@ -148,11 +152,23 @@ Partial Class Form1
         ComboBox2.Size = New Size(103, 28)
         ComboBox2.TabIndex = 19
         ' 
+        ' Ventas
+        ' 
+        ComboBox3.DropDownStyle = ComboBoxStyle.DropDownList
+        ComboBox3.FormattingEnabled = True
+        ComboBox3.ImeMode = ImeMode.NoControl
+        ComboBox3.Items.AddRange(New Object() {"ID", "Cliente", "Fecha"})
+        ComboBox3.Location = New Point(175, 60)
+        ComboBox3.Name = "ComboBox3"
+        ComboBox3.Size = New Size(103, 28)
+        ComboBox3.TabIndex = 19
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(929, 409)
+        Controls.Add(ComboBox3)
         Controls.Add(ComboBox2)
         Controls.Add(ComboBox1)
         Controls.Add(DataGridView1)
@@ -191,5 +207,5 @@ Partial Class Form1
     Friend WithEvents DataGridView1 As DataGridView
     Friend WithEvents ComboBox1 As ComboBox
     Friend WithEvents ComboBox2 As ComboBox
-
+    Friend WithEvents ComboBox3 As ComboBox
 End Class
